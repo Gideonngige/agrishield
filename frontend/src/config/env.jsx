@@ -1,0 +1,1 @@
+export const API_URL = 'https://agrishield-vktq.onrender.com/api';
