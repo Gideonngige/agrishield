@@ -7,6 +7,8 @@ import Footer from "../components/Footer";
 import WeatherCard from "../components/WeatherCard";
 import RiskCard from "../components/RiskCard";
 
+import { API_URL } from "../config/env";
+
 import {
   Thermometer,
   CloudRain,
@@ -27,7 +29,7 @@ const Dashboard = () => {
   const fetchWeather = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/weather/?lat=-0.0467&lon=37.6556"
+        `${API_URL}/weather/?lat=-0.0467&lon=37.6556`
       );
 
       setData(response.data);
@@ -126,6 +128,43 @@ const Dashboard = () => {
     unit="km/h"
     icon={Wind}
   />
+</div>
+
+<div className="mt-12">
+
+  <h2 className="text-2xl font-bold mb-6">
+    24 Hour Forecast
+  </h2>
+
+  <div className="grid md:grid-cols-4 gap-4">
+
+    {weather.forecast?.slice(0, 8).map((item, index) => (
+      <div
+        key={index}
+        className="bg-white rounded-xl p-4 shadow-sm"
+      >
+        <p className="font-medium">
+          {item.time.split("T")[1]}
+        </p>
+
+        <img
+          src={item.icon}
+          alt=""
+          className="w-12 h-12"
+        />
+
+        <p className="text-lg font-bold">
+          {item.temperature}°C
+        </p>
+
+        <p className="text-sm text-gray-500">
+          Rain {item.precipitation_probability}%
+        </p>
+      </div>
+    ))}
+
+  </div>
+
 </div>
 
         </div>

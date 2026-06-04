@@ -5,6 +5,8 @@ import { Upload, TreePine, CheckCircle2, AlertCircle, RefreshCw } from "lucide-r
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
+import { API_URL } from "../config/env";
+
 const TreeAnalysis = () => {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
@@ -30,7 +32,7 @@ const TreeAnalysis = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8000/api/trees/",
+        `${API_URL}/trees/analyze/`,
         formData,
         {
           headers: {
