@@ -17,19 +17,48 @@ def index(request):
 
 
 # API endpoint for weather dashboard
+# @api_view(["GET"])
+# def weather_dashboard(request):
+
+#     lat = request.GET.get("lat")
+#     lon = request.GET.get("lon")
+
+#     weather = WeatherAIService.get_weather(lat, lon)
+#     # print("Weather data:", weather)
+
+#     risk = calculate_risk(weather)
+
+#     return Response({
+#         "weather": weather,
+#         "risk": risk,
+#     })
+
 @api_view(["GET"])
 def weather_dashboard(request):
 
     lat = request.GET.get("lat")
     lon = request.GET.get("lon")
 
-    weather = WeatherAIService.get_weather(lat, lon)
+    response = WeatherAIService.get_weather(lat, lon)
 
-    risk = calculate_risk(weather)
+    current = response["current"]
+
+    first_hour = response["hourly"][0]
+
+    weather_data = {
+        "temperature": current["temperature"],
+        "wind_speed": current["wind_speed"],
+        "humidity": first_hour["humidity"],
+        "rain_probability": first_hour["precipitation_probability"],
+        "icon": current["icon"],
+        "forecast": response["hourly"][:24]
+    }
+
+    risk = calculate_risk(weather_data)
 
     return Response({
-        "weather": weather,
-        "risk": risk,
+        "weather": weather_data,
+        "risk": risk
     })
 
 

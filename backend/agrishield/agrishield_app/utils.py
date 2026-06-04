@@ -1,30 +1,42 @@
 def calculate_risk(weather):
 
-    risk = 0
+    score = 0
 
-    temperature = weather.get("temperature", 0)
-    humidity = weather.get("humidity", 0)
-    wind = weather.get("wind_speed", 0)
+    if weather["temperature"] > 30:
+        score += 30
 
-    if temperature > 30:
-        risk += 25
+    if weather["humidity"] > 85:
+        score += 25
 
-    if humidity > 85:
-        risk += 25
+    if weather["rain_probability"] > 60:
+        score += 25
 
-    if wind > 20:
-        risk += 25
+    if weather["wind_speed"] > 15:
+        score += 20
 
-    if risk >= 70:
+    if score >= 70:
         level = "HIGH"
 
-    elif risk >= 40:
+        recommendation = (
+            "High weather risk detected. Monitor crops closely."
+        )
+
+    elif score >= 40:
         level = "MEDIUM"
+
+        recommendation = (
+            "Moderate risk. Consider preventive measures."
+        )
 
     else:
         level = "LOW"
 
+        recommendation = (
+            "Conditions look favorable for farming activities."
+        )
+
     return {
-        "score": risk,
+        "score": score,
         "level": level,
+        "recommendation": recommendation,
     }

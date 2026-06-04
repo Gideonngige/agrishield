@@ -57,6 +57,31 @@ const Dashboard = () => {
   const weather = data?.weather || {};
   const risk = data?.risk || {};
 
+const generateInsight = () => {
+  const temp = Number(weather.temperature || 0);
+  const humidity = Number(weather.humidity || 0);
+  const rain = Number(weather.rain_probability || 0);
+  const wind = Number(weather.wind_speed || 0);
+
+  if (rain > 70) {
+    return "Heavy rainfall is expected. Consider reducing irrigation activities and monitor fields for possible waterlogging.";
+  }
+
+  if (temp > 30) {
+    return "High temperatures detected. Ensure crops receive adequate water and monitor for heat stress.";
+  }
+
+  if (humidity > 85) {
+    return "High humidity may increase the risk of fungal diseases. Regular crop inspection is recommended.";
+  }
+
+  if (wind > 20) {
+    return "Strong winds are expected. Young crops and greenhouse structures should be protected.";
+  }
+
+  return "Current weather conditions are favorable for farming activities. Continue regular crop management practices.";
+};
+
   return (
     <div className="bg-slate-50 min-h-screen">
 
@@ -212,7 +237,7 @@ const Dashboard = () => {
 
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-8 h-full">
+            <div className="bg-white rounded-2xl shadow-md p-8">
 
               <div className="bg-purple-100 w-14 h-14 rounded-xl flex items-center justify-center mb-5">
 
@@ -228,10 +253,7 @@ const Dashboard = () => {
               </h3>
 
               <p className="text-gray-600 leading-relaxed">
-
-                {weather.ai_summary ||
-                  "No AI insights available at the moment."}
-
+                {generateInsight()}
               </p>
 
             </div>
