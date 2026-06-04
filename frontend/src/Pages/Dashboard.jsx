@@ -21,24 +21,29 @@ import {
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+  const [county, setCounty] = useState("Meru");
 
   useEffect(() => {
-    fetchWeather();
-  }, []);
+  fetchWeather();
+}, [county]);
 
   const fetchWeather = async () => {
-    try {
-      const response = await axios.get(
-        `${API_URL}/weather/?lat=-0.0467&lon=37.6556`
-      );
+  try {
 
-      setData(response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setLoading(true);
+
+    const response = await axios.get(
+      `${API_URL}/weather/?county=${county}`
+    );
+
+    setData(response.data);
+
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (loading) {
     return (
@@ -109,9 +114,32 @@ const generateInsight = () => {
 
       {/* MAIN CONTENT */}
 
+      
+
       <section className="max-w-7xl mx-auto px-6 py-12">
+        
 
         {/* WEATHER CARDS */}
+
+        <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
+
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Select County
+  </label>
+
+  <select
+    value={county}
+    onChange={(e) => setCounty(e.target.value)}
+    className="w-full  border rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 focus:outline-none"
+  >
+    <option value="Meru">Meru</option>
+    <option value="Nairobi">Nairobi</option>
+    <option value="Kiambu">Kiambu</option>
+    <option value="Nyeri">Nyeri</option>
+    <option value="Nakuru">Nakuru</option>
+  </select>
+
+</div>
 
         <div className="mb-12">
 

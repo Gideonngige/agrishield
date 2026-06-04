@@ -10,6 +10,8 @@ from .utils import calculate_risk
 import requests
 from django.conf import settings
 
+from .county_coordinates import COUNTY_COORDINATES
+
 def index(request):
     return HttpResponse("Hello world!")
 
@@ -36,10 +38,15 @@ def index(request):
 @api_view(["GET"])
 def weather_dashboard(request):
 
-    lat = request.GET.get("lat")
-    lon = request.GET.get("lon")
+    # lat = request.GET.get("lat")
+    # lon = request.GET.get("lon")
+    county = request.GET.get("county", "Meru")
+    coords = COUNTY_COORDINATES.get(county)
 
-    response = WeatherAIService.get_weather(lat, lon)
+    if not coords:
+        return Response({"error": "Invalid county"},status=400)
+
+    response = WeatherAIService.get_weather(coords["lat"], coords["lon"])
 
     current = response["current"]
 

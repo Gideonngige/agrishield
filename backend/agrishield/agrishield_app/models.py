@@ -15,8 +15,6 @@ class Farm(models.Model):
         return self.farm_name
 
 
-from django.db import models
-
 class TreeAnalysis(models.Model):
     farm = models.ForeignKey(Farm, on_delete=models.CASCADE, related_name="analyses")
     total_tree_count = models.IntegerField(default=0)
